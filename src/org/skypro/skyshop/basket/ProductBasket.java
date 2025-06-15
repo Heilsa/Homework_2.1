@@ -2,6 +2,8 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
+import java.util.List;
+
 public class ProductBasket {
     private final int MAX_SIZE = 5;
     private Product[] products;
@@ -19,6 +21,7 @@ public class ProductBasket {
         }
         System.out.println("Невозможно добавить продукт");
     }
+
 
     public int getTotalPrice() {
         int total = 0;
@@ -61,4 +64,18 @@ public class ProductBasket {
             products[i] = null;
         }
     }
-}
+        public static void printBasket(List <Product> basket) {
+            int totalCost = 0;
+            int specialCount = 0;
+
+            for (Product product : basket) {
+                System.out.println(product.toString());
+                totalCost += product.getPrice();
+                if (product.isSpecial()) {
+                    specialCount++;
+                }
+            }
+            System.out.println("Итого: " + totalCost);
+            System.out.println("Специальных товаров: " + specialCount);
+        }
+    }
