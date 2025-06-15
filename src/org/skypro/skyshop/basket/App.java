@@ -23,7 +23,6 @@ class Main {
         // Выводим содержимое корзины
         printBasket(basket);
     }
-
     public static void printBasket(List<Product> basket) {
         int totalCost = 0;
         int specialCount = 0;
