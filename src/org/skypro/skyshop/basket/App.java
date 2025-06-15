@@ -1,57 +1,40 @@
 package org.skypro.skyshop.basket;
 
+import org.skypro.skyshop.basket.DiscountedProduct;
+import org.skypro.skyshop.basket.FixPriceProduct;
+import org.skypro.skyshop.basket.SimpleProduct;
 import org.skypro.skyshop.product.Product;
 
-public class App {
+import java.util.ArrayList;
+import java.util.List;
 
+class Main {
     public static void main(String[] args) {
+        // Создаем список товаров (корзину)
+        List<Product> basket = new ArrayList<>();
 
-        // Создаем продукты
-        Product milk = new Product("Молоко", 50);
-        Product bread = new Product("Хлеб", 30);
-        Product butter = new Product("Масло", 100);
-        Product cheese = new Product("Сыр", 150);
-        Product juice = new Product("Сок", 80);
-        Product apple = new Product("Яблоко", 20);
+        // Добавляем товары разных типов
+        basket.add(new SimpleProduct("Яблоко", 300));
+        basket.add(new FixPriceProduct("Молоко")); // фиксированная цена
+        basket.add(new DiscountedProduct("Киви", 200, 25)); // скидка 25%
+        basket.add(new FixPriceProduct("Апельсин")); // еще один фиксированный товар
+        basket.add(new DiscountedProduct("Гранат", 50, 15)); // скидка 15%
 
-        // Создаем корзину
-        ProductBasket basket = new ProductBasket();
+        // Выводим содержимое корзины
+        printBasket(basket);
+    }
+    public static void printBasket(List<Product> basket) {
+        int totalCost = 0;
+        int specialCount = 0;
 
-        // Добавление продукта в корзину
-        basket.addProduct(milk);
-
-        // Заполняем корзину до предела
-        basket.addProduct(bread);
-        basket.addProduct(butter);
-        basket.addProduct(cheese);
-        basket.addProduct(juice);
-
-        // Попытка добавить еще один продукт
-        basket.addProduct(apple);
-
-        // Печать содержимого корзины
-        System.out.println("Содержимое корзины:");
-        basket.printContents();
-
-        // Получение стоимости корзины
-        System.out.println("Общая стоимость: " + basket.getTotalPrice());
-
-        // Проверка наличия товара в корзине
-        System.out.println("Есть ли в корзине 'Молоко'? " + basket.containsProduct("Молоко"));
-
-        System.out.println("Есть ли в корзине 'Яблоко'? " + basket.containsProduct("Яблоко"));
-
-        // Очистка корзины
-        basket.clear();
-
-        // Печать содержимого после очистки
-        System.out.println("После очистки:");
-        basket.printContents();
-
-        // Получение стоимости пустой корзины
-        System.out.println("Общая стоимость после очистки: " + basket.getTotalPrice());
-
-        // Проверка наличия товара в пустой корзине
-        System.out.println("Есть ли в пустой корзине 'Молоко'? " + basket.containsProduct("Молоко"));
+        for (Product product : basket) {
+            System.out.println(product.toString());
+            totalCost += product.getPrice();
+            if (product.isSpecial()) {
+                specialCount++;
+            }
+        }
+        System.out.println("Итого: " + totalCost);
+        System.out.println("Специальных товаров: " + specialCount);
     }
 }
