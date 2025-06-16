@@ -1,29 +1,35 @@
 package org.skypro.skyshop.basket;
 
-import org.skypro.skyshop.basket.DiscountedProduct;
-import org.skypro.skyshop.basket.FixPriceProduct;
-import org.skypro.skyshop.basket.SimpleProduct;
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.basket.SimpleProduct;
+import org.skypro.skyshop.basket.FixPriceProduct;
+import org.skypro.skyshop.basket.DiscountedProduct;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class Main {
-    public static void main(String[] args) {
-        // Создаем список товаров (корзину)
-        List<Product> basket = new ArrayList<>();
+    private List<Product> basket; // поле класса
 
-        // Добавляем товары разных типов
-        basket.add(new SimpleProduct("Яблоко", 300));
-        basket.add(new FixPriceProduct("Молоко")); // фиксированная цена
-        basket.add(new DiscountedProduct("Киви", 200, 25)); // скидка 25%
-        basket.add(new FixPriceProduct("Апельсин")); // еще один фиксированный товар
-        basket.add(new DiscountedProduct("Гранат", 50, 15)); // скидка 15%
-
-        // Выводим содержимое корзины
-        printBasket(basket);
+    public Main() {
+        this.basket = new ArrayList<>();
     }
-    public static void printBasket(List<Product> basket) {
+
+    public static void main(String[] args) {
+        Main app = new Main();
+
+        // добавляем товары в корзину через поле экземпляра
+        app.basket.add(new SimpleProduct("Яблоко", 300));
+        app.basket.add(new FixPriceProduct("Молоко")); // фиксированная цена
+        app.basket.add(new DiscountedProduct("Киви", 200, 25)); // скидка 25%
+        app.basket.add(new FixPriceProduct("Апельсин")); // еще один фиксированный товар
+        app.basket.add(new DiscountedProduct("Гранат", 50, 15)); // скидка 15%
+
+
+        app.printBasket();
+    }
+
+    public void printBasket() {
         int totalCost = 0;
         int specialCount = 0;
 
