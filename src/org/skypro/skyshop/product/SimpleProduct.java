@@ -1,12 +1,16 @@
 package org.skypro.skyshop.product;
 
-public class SimpleProduct implements Product {
+import org.skypro.skyshop.search.Searchable;
+
+public class SimpleProduct implements Product, Searchable {
     private String name;
     private int price;
+    private boolean isSpecial;
 
-    public SimpleProduct(String name, int price) {
+    public SimpleProduct(String name, int price, boolean isSpecial) {
         this.name = name;
         this.price = price;
+        this.isSpecial = isSpecial;
     }
 
     @Override
@@ -21,11 +25,17 @@ public class SimpleProduct implements Product {
 
     @Override
     public boolean isSpecial() {
-        return false;
+        return isSpecial;
+    }
+
+    // Методы Searchable
+    @Override
+    public String getSearchTerm() {
+        return getName();
     }
 
     @Override
-    public String toString() {
-        return "Продукт: " + name + ", Цена: " + price;
+    public String getType() {
+        return "PRODUCT";
     }
 }
