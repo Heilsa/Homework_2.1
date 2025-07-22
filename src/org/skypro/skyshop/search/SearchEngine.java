@@ -1,38 +1,53 @@
 package org.skypro.skyshop.search;
 
-import java.util.Arrays;
+import org.skypro.skyshop.BestResultNotFound;
+import org.skypro.skyshop.search.Searchable;
+
+import java.util.List;
 
 public class SearchEngine {
+    private List<Searchable> items;
 
-    private Searchable[] items;
-    private int size; // текущий счетчик добавленных элементов
-
-    public SearchEngine(int capacity) {
-        this.items = new Searchable[capacity];
-        this.size = 0;
+    public SearchEngine(List<Searchable> items) {
+        this.items = items;
     }
 
-    public void add(Searchable item) {
-        if (size < items.length) {
-            items[size] = item;
-            size++;
-        } else {
-            System.out.println("Массив полон, добавление невозможно");
+    public Searchable findBestMatch(String search) throws BestResultNotFound {
+        if (items == null || items.isEmpty()) {
+            throw new BestResultNotFound("Нет элементов для поиска по запросу: " + search);
         }
-    }
+        if (search == null || search.isBlank()) {
+            throw new BestResultNotFound("Пустой поисковый запрос");
+        }
 
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
-        int count = 0;
+        Searchable bestMatch = null;
+        int maxCount = -1;
 
-        for (int i = 0; i < size; i++) {
-            String term = items[i].getSearchTerm();
-            if (term != null && term.contains(query)) {
-                results[count] = items[i];
-                count++;
-                if (count == 5) break;
+        for (Searchable item : items) {
+            String term = item.getSearchTerm();
+            int count = countOccurrences(term, search);
+            if (count > maxCount) {
+                maxCount = count;
+                bestMatch = item;
             }
         }
-        return results;
+
+        if (bestMatch == null || maxCount == 0) {
+            throw new BestResultNotFound("Поисковый запрос '" + search + "' не дал подходящих результатов.");
+        }
+
+        return bestMatch;
+    }
+
+    private int countOccurrences(String str, String sub) {
+        int count = 0;
+        int index = 0;
+        int subLength = sub.length();
+
+        while ((index = str.indexOf(sub, index)) != -1) {
+            count++;
+            index += subLength;
+        }
+        return count;
     }
 }

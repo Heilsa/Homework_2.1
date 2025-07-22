@@ -1,41 +1,19 @@
 package org.skypro.skyshop.product;
 
-import org.skypro.skyshop.search.Searchable;
+import org.skypro.skyshop.product.Product;
 
-public class SimpleProduct implements Product, Searchable {
-    private String name;
-    private int price;
-    private boolean isSpecial;
+public class SimpleProduct extends Product {
+    private double price;
 
-    public SimpleProduct(String name, int price, boolean isSpecial) {
-        this.name = name;
+    public SimpleProduct(String name, double price) {
+        super(name);
+        if (price <= 0) {
+            throw new IllegalArgumentException("Цена должна быть больше 0");
+        }
         this.price = price;
-        this.isSpecial = isSpecial;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int getPrice() {
+    public double getPrice() {
         return price;
-    }
-
-    @Override
-    public boolean isSpecial() {
-        return isSpecial;
-    }
-
-    // Методы Searchable
-    @Override
-    public String getSearchTerm() {
-        return getName();
-    }
-
-    @Override
-    public String getType() {
-        return "PRODUCT";
     }
 }

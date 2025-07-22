@@ -3,7 +3,7 @@ package org.skypro.skyshop.app;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.search.SearchEngine;
-import org.skypro.skyshop.search.Searchable;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import java.util.List;
 
 class Main {
 
-    public static void main(String[] args) {
+    public static <Searchable> void main(String[] args) {
 
         List<Product> basketItems = new ArrayList<>();
         basketItems.add(new SimpleProduct("Яблоко", 300, false));
@@ -20,15 +20,11 @@ class Main {
         basketItems.add(new FixPriceProduct("Апельсин")); // еще один фиксированный товар
         basketItems.add(new DiscountedProduct("Гранат", 50, 15)); // скидка 15%
 
-
-        // Создаем объект корзины и выводим содержимое
         ProductBasket basket = new ProductBasket(basketItems);
         basket.printBasket();
 
-        // Создаем движок поиска с вместимостью 15 элементов
         SearchEngine engine = new SearchEngine(15);
 
-        // Добавляем товары
         Product product1 = new SimpleProduct("Honor", 3000, false);
         Product product2 = new SimpleProduct("HyperBeast", 5000, true);
         Product product3 = new SimpleProduct("MR710", 1500, true);
@@ -46,8 +42,6 @@ class Main {
         engine.add(article2);
         engine.add(article3);
 
-        // Выполняем поиск по разным запросам и выводим результаты
-
         String[] queries = {"Телефоны", "лучшие", "периферия", "HyperBeast", "Обзор"};
 
         for (String q : queries) {
@@ -55,6 +49,39 @@ class Main {
             Searchable[] res = engine.search(q);
             System.out.println(Arrays.toString(res));
             System.out.println();
+        }
+        try {
+            SimpleProduct invalidProduct1 = new SimpleProduct("", 100, false);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта с пустым названием: " + e.getMessage());
+        }
+        try {
+            SimpleProduct invalidProduct2 = new SimpleProduct("   ", 150, false);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта с названием из пробелов: " + e.getMessage());
+        }
+        try {
+            SimpleProduct invalidProduct3 = new SimpleProduct("Молоко", 0, false);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта с ценой 0: " + e.getMessage());
+        }
+        try {
+            // Цена отрицательная
+            SimpleProduct invalidProduct4 = new SimpleProduct("Киви", -50, false);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта с отрицательной ценой: " + e.getMessage());
+        }
+        try {
+            // Процент скидки вне диапазона
+            DiscountedProduct invalidDiscount1 = new DiscountedProduct("Гранат", 50, -10);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании скидочного продукта с отрицательным процентом скидки: " + e.getMessage());
+        }
+        try {
+            // Процент скидки больше 100
+            DiscountedProduct invalidDiscount2 = new DiscountedProduct("Яблоко", 300, 150);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании скидочного продукта с процентом > 100: " + e.getMessage());
         }
     }
 }
