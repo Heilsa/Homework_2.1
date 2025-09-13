@@ -24,7 +24,7 @@ public class ProductBasket implements Searchable {
             if (product instanceof org.skypro.skyshop.product.SimpleProduct simpleProduct) {
                 totalCost += simpleProduct.getPrice();
                 if (simpleProduct.isSpecial()) {
-                     specialCount++;
+                      specialCount++;
                 }
             } else if (product instanceof org.skypro.skyshop.product.DiscountedProduct discountedProduct) {
                 totalCost += discountedProduct.getPriceWithDiscount();
