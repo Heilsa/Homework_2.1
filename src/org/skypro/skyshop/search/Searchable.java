@@ -1,12 +1,7 @@
-public class MySearchable implements Searchable {
-    private String searchTerm;
+package org.skypro.skyshop.search;
 
-    public MySearchable(String searchTerm) {
-        this.searchTerm = searchTerm;
-    }
-
-    @Override
-    public String getSearchTerm() {
-        return searchTerm;
-    }
+public interface Searchable {
+    String getSearchTerm();  // строка для поиска
+    String getName();
+    String getType();
 }

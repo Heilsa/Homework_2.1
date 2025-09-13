@@ -2,32 +2,23 @@ package org.skypro.skyshop.product;
 
 import org.skypro.skyshop.search.Searchable;
 
-public final class Article implements Searchable {
-    private String  stateName;
-    private String  stateContent;
+public class Article implements Searchable {
+    private String title;
+    private String content;
 
-    public Article(String stateName, String stateContent) {
-        this.stateName = stateName;
-        this.stateContent = stateContent;
-    }
-
-    public String getStateName() {
-        return stateName;
-    }
-
-    public String getStateContent() {
-        return stateContent;
-    }
-
-    @Override
-    public String toString() {
-        return stateName + "\n" + stateContent;
+    public Article(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
     @Override
     public String getSearchTerm() {
-        // Можно объединить название и содержание для поиска
-        return toString();
+        return title + " " + content;
+    }
+
+    @Override
+    public String getName() {
+        return title;
     }
 
     @Override
@@ -36,7 +27,7 @@ public final class Article implements Searchable {
     }
 
     @Override
-    public String getName() {
-        return this.stateName;
+    public String toString() {
+        return getType() + ": " + title + " — " + content;
     }
 }

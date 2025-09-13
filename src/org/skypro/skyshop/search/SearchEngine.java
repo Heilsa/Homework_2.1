@@ -1,15 +1,36 @@
 package org.skypro.skyshop.search;
 
 import org.skypro.skyshop.BestResultNotFound;
-import org.skypro.skyshop.search.Searchable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchEngine {
     private List<Searchable> items;
 
-    public SearchEngine(List<Searchable> items) {
-        this.items = items;
+    public SearchEngine() {
+        this.items = new ArrayList<>();
+    }
+
+    public SearchEngine(int capacity) {
+        this.items = new ArrayList<>(capacity);
+    }
+
+    public void add(Searchable item) {
+        items.add(item);
+    }
+
+    public Searchable[] search(String search) {
+        List<Searchable> results = new ArrayList<>();
+        if (search == null || search.isBlank()) {
+            return new Searchable[0];
+        }
+        for (Searchable item : items) {
+            if (item.getSearchTerm().toLowerCase().contains(search.toLowerCase())) {
+                results.add(item);
+            }
+        }
+        return results.toArray(new Searchable[0]);
     }
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
@@ -21,11 +42,11 @@ public class SearchEngine {
         }
 
         Searchable bestMatch = null;
-        int maxCount = -1;
+        int maxCount = 0;
 
         for (Searchable item : items) {
             String term = item.getSearchTerm();
-            int count = countOccurrences(term, search);
+            int count = countOccurrences(term.toLowerCase(), search.toLowerCase());
             if (count > maxCount) {
                 maxCount = count;
                 bestMatch = item;

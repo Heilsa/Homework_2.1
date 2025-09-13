@@ -3,8 +3,8 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.search.Searchable;
 
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductBasket implements Searchable {
 
@@ -19,30 +19,37 @@ public class ProductBasket implements Searchable {
         int specialCount = 0;
 
         for (Product product : products) {
-            System.out.println(product.toString());
-            totalCost += product.getPrice();
-            if (product.isSpecial()) {
-                specialCount++;
+            System.out.println(product);
+
+            if (product instanceof org.skypro.skyshop.product.SimpleProduct simpleProduct) {
+                totalCost += simpleProduct.getPrice();
+                if (simpleProduct.isSpecial()) {
+                    specialCount++;
+                }
+            } else if (product instanceof org.skypro.skyshop.product.DiscountedProduct discountedProduct) {
+                totalCost += discountedProduct.getPriceWithDiscount();
+            } else if (product instanceof org.skypro.skyshop.product.FixPriceProduct fixPriceProduct) {
+                totalCost += fixPriceProduct.getPrice();
             }
         }
         System.out.println("Итого: " + totalCost);
         System.out.println("Специальных товаров: " + specialCount);
     }
 
-
     @Override
     public String getSearchTerm() {
-        return getName(); // возвращает имя товара
+        return products.stream()
+                .map(Product::getName)
+                .collect(Collectors.joining(" "));
     }
-
 
     @Override
     public String getName() {
-        return "";
+        return "Корзина товаров";
     }
 
     @Override
     public String getType() {
-        return "PRODUCT"; // тип - строка PRODUCT
+        return "PRODUCT_BASKET";
     }
 }

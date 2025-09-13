@@ -3,6 +3,7 @@ package org.skypro.skyshop.app;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.search.SearchEngine;
+import org.skypro.skyshop.search.Searchable;
 
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 
 class Main {
 
-    public static <Searchable> void main(String[] args) {
+    public static void main(String[] args) {
 
         List<Product> basketItems = new ArrayList<>();
         basketItems.add(new SimpleProduct("Яблоко", 300, false));
@@ -66,19 +67,16 @@ class Main {
             System.out.println("Ошибка при создании продукта с ценой 0: " + e.getMessage());
         }
         try {
-            // Цена отрицательная
             SimpleProduct invalidProduct4 = new SimpleProduct("Киви", -50, false);
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка при создании продукта с отрицательной ценой: " + e.getMessage());
         }
         try {
-            // Процент скидки вне диапазона
             DiscountedProduct invalidDiscount1 = new DiscountedProduct("Гранат", 50, -10);
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка при создании скидочного продукта с отрицательным процентом скидки: " + e.getMessage());
         }
         try {
-            // Процент скидки больше 100
             DiscountedProduct invalidDiscount2 = new DiscountedProduct("Яблоко", 300, 150);
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка при создании скидочного продукта с процентом > 100: " + e.getMessage());
