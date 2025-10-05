@@ -9,27 +9,12 @@ import java.util.List;
 public class ProductBasket {
     private List<Product> products;
 
-    public ProductBasket() {
+    public ProductBasket(List<Product> basketItems) {
         this.products = new ArrayList<>();
     }
 
-    public ProductBasket(List<Product> products) {
-        this.products = new ArrayList<>(products);
-    }
-
-    public void add(Product product) {
-        this.products.add(product);
-    }
-
-    public void printBasket() {
-        if (products.isEmpty()) {
-            System.out.println("Корзина пуста");
-        } else {
-            System.out.println("Товары в корзине:");
-            for (Product product : products) {
-                System.out.println(product);
-            }
-        }
+    public void addProduct(Product product) {
+        products.add(product);
     }
 
     public List<Product> removeByName(String name) {
@@ -43,5 +28,20 @@ public class ProductBasket {
             }
         }
         return removedProducts;
+    }
+
+    public void printBasket() {
+        if (products.isEmpty()) {
+            System.out.println("Корзина пуста");
+        } else {
+            System.out.println("Содержимое корзины:");
+            for (Product p : products) {
+                System.out.println(p);
+            }
+        }
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 }

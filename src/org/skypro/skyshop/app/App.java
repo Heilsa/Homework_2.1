@@ -12,6 +12,7 @@ class Main {
 
     public static void main(String[] args) {
 
+        // Создаем список продуктов для корзины
         List<Product> basketItems = List.of(
                 new SimpleProduct("Яблоко", 300, false),
                 new FixPriceProduct("Молоко"),
@@ -20,6 +21,7 @@ class Main {
                 new DiscountedProduct("Гранат", 50, 15)
         );
 
+        // Создаем корзину
         ProductBasket basket = new ProductBasket(basketItems);
         System.out.println("Изначальная корзина:");
         basket.printBasket();
@@ -35,7 +37,7 @@ class Main {
             for (Product p : removedProducts) {
                 System.out.println(p);
             }
-            System.out.println("\nКорзина после удаления:");
+            System.out.println("Корзина после удаления:");
             basket.printBasket();
         }
 

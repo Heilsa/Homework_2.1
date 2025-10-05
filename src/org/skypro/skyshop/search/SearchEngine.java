@@ -17,7 +17,7 @@ public class SearchEngine {
     }
 
     public void add(Searchable item) {
-        items.add(item);
+        items.add((Searchable) item);
     }
 
     // Метод поиска возвращает все подходящие результаты
