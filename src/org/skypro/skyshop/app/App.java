@@ -5,8 +5,6 @@ import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,15 +12,32 @@ class Main {
 
     public static void main(String[] args) {
 
-        List<Product> basketItems = new ArrayList<>();
-        basketItems.add(new SimpleProduct("Яблоко", 300, false));
-        basketItems.add(new FixPriceProduct("Молоко")); // фиксированная цена
-        basketItems.add(new DiscountedProduct("Киви", 200, 25)); // скидка 25%
-        basketItems.add(new FixPriceProduct("Апельсин")); // еще один фиксированный товар
-        basketItems.add(new DiscountedProduct("Гранат", 50, 15)); // скидка 15%
+        List<Product> basketItems = List.of(
+                new SimpleProduct("Яблоко", 300, false),
+                new FixPriceProduct("Молоко"),
+                new DiscountedProduct("Киви", 200, 25),
+                new FixPriceProduct("Апельсин"),
+                new DiscountedProduct("Гранат", 50, 15)
+        );
 
         ProductBasket basket = new ProductBasket(basketItems);
+        System.out.println("Изначальная корзина:");
         basket.printBasket();
+
+        // Удаляем товар по имени
+        String nameToRemove = "Яблоко";
+        System.out.println("\nУдаляем товары с именем: " + nameToRemove);
+        List<Product> removedProducts = basket.removeByName(nameToRemove);
+        if (removedProducts.isEmpty()) {
+            System.out.println("Товары с таким именем не найдены в корзине.\n");
+        } else {
+            System.out.println("Удаленные товары:");
+            for (Product p : removedProducts) {
+                System.out.println(p);
+            }
+            System.out.println("\nКорзина после удаления:");
+            basket.printBasket();
+        }
 
         SearchEngine engine = new SearchEngine(15);
 
@@ -34,10 +49,9 @@ class Main {
         engine.add((Searchable) product2);
         engine.add((Searchable) product3);
 
-        // Добавляем статьи
         Article article1 = new Article("Телефоны", "Обзор лучших телефонов 2025");
         Article article2 = new Article("ПК", "Лучшие ПК для работы и развлечений");
-        Article article3 = new Article("Периферия", "Обзор лучшей периферии ");
+        Article article3 = new Article("Периферия", "Обзор лучшей периферии");
 
         engine.add(article1);
         engine.add(article2);
@@ -47,10 +61,11 @@ class Main {
 
         for (String q : queries) {
             System.out.println("Результаты поиска по запросу: \"" + q + "\":");
-            Searchable[] res = engine.search(q);
+            Searchable[] res = engine.search(q).toArray(new Searchable[0]);
             System.out.println(Arrays.toString(res));
             System.out.println();
         }
+
         try {
             SimpleProduct invalidProduct1 = new SimpleProduct("", 100, false);
         } catch (IllegalArgumentException e) {

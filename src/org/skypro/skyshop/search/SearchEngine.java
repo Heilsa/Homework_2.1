@@ -20,19 +20,21 @@ public class SearchEngine {
         items.add(item);
     }
 
-    public Searchable[] search(String search) {
+    // Метод поиска возвращает все подходящие результаты
+    public List<Searchable> search(String search) {
         List<Searchable> results = new ArrayList<>();
         if (search == null || search.isBlank()) {
-            return new Searchable[0];
+            return results;
         }
         for (Searchable item : items) {
             if (item.getSearchTerm().toLowerCase().contains(search.toLowerCase())) {
                 results.add(item);
             }
         }
-        return results.toArray(new Searchable[0]);
+        return results;
     }
 
+    // Метод поиска лучшего совпадения - оставить как есть.
     public Searchable findBestMatch(String search) throws BestResultNotFound {
         if (items == null || items.isEmpty()) {
             throw new BestResultNotFound("Нет элементов для поиска по запросу: " + search);
@@ -56,7 +58,6 @@ public class SearchEngine {
         if (bestMatch == null || maxCount == 0) {
             throw new BestResultNotFound("Поисковый запрос '" + search + "' не дал подходящих результатов.");
         }
-
         return bestMatch;
     }
 
