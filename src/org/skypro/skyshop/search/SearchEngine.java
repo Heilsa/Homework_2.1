@@ -34,7 +34,6 @@ public class SearchEngine {
         return results;
     }
 
-    // Метод поиска лучшего совпадения - оставить как есть.
     public Searchable findBestMatch(String search) throws BestResultNotFound {
         if (items == null || items.isEmpty()) {
             throw new BestResultNotFound("Нет элементов для поиска по запросу: " + search);
