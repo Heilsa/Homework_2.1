@@ -7,6 +7,8 @@ import org.skypro.skyshop.search.Searchable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 class Main {
 
@@ -98,5 +100,15 @@ class Main {
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка при создании скидочного продукта с процентом > 100: " + e.getMessage());
         }
+    }
+    public static Map<String, Searchable> search(List<Searchable> items, String searchTerm) {
+        Map<String, Searchable> results = new TreeMap<>();
+        String lowerSearchTerm = searchTerm.toLowerCase();
+        for (Searchable item : items) {
+            if (item.getSearchTerm().toLowerCase().contains(lowerSearchTerm)) {
+                results.put(item.getName(), item);
+            }
+        }
+        return results;
     }
 }
