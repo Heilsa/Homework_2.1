@@ -2,18 +2,13 @@ package org.skypro.skyshop.product;
 
 import org.skypro.skyshop.search.Searchable;
 
-public class Product implements  Searchable {
+import java.util.Objects;
+
+public abstract class Product implements Searchable {
     private String name;
-    private double price;
 
     public Product(String name) {
         this.name = name;
-        this.price = price;
-    }
-
-    @Override
-    public String getSearchTerm() {
-        return name;
     }
 
     @Override
@@ -21,17 +16,17 @@ public class Product implements  Searchable {
         return name;
     }
 
-    public double getPrice() {
-        return price;
+    // equals и hashCode по полю name
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return name.equals(product.name);
     }
 
     @Override
-    public String getType() {
-        return "Product";
-    }
-
-    @Override
-    public String toString() {
-        return "Product{name='" + name + "', price=" + price + "}";
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

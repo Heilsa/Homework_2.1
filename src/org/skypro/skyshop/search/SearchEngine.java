@@ -1,74 +1,48 @@
 package org.skypro.skyshop.search;
 
-import org.skypro.skyshop.BestResultNotFound;
+import org.skypro.skyshop.app.SearchableResultComparator;
+import org.skypro.skyshop.product.Article;
+import org.skypro.skyshop.product.Product;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class SearchEngine {
-    private List<Searchable> items;
+    private Set<Product> products = new HashSet<>();
+    private Set<Article> articles = new HashSet<>();
 
-    public SearchEngine() {
-        this.items = new ArrayList<>();
+    public SearchEngine(int i) {
     }
 
-    public SearchEngine(int capacity) {
-        this.items = new ArrayList<>(capacity);
+    public void addProduct(Product product) {
+        products.add(product);
     }
 
-    public void add(Searchable item) {
-        items.add((Searchable) item);
+    public void addArticle(Article article) {
+        articles.add(article);
     }
 
-    // Метод поиска возвращает все подходящие результаты
-    public List<Searchable> search(String search) {
-        List<Searchable> results = new ArrayList<>();
-        if (search == null || search.isBlank()) {
-            return results;
-        }
-        for (Searchable item : items) {
-            if (item.getSearchTerm().toLowerCase().contains(search.toLowerCase())) {
-                results.add(item);
-            }
-        }
-        return results;
-    }
+    public Set<Searchable> search(String query) {
+        TreeSet<Searchable> result = new TreeSet<>(new SearchableResultComparator());
+        String lowerQuery = query.toLowerCase();
 
-    public Searchable findBestMatch(String search) throws BestResultNotFound {
-        if (items == null || items.isEmpty()) {
-            throw new BestResultNotFound("Нет элементов для поиска по запросу: " + search);
-        }
-        if (search == null || search.isBlank()) {
-            throw new BestResultNotFound("Пустой поисковый запрос");
-        }
-
-        Searchable bestMatch = null;
-        int maxCount = 0;
-
-        for (Searchable item : items) {
-            String term = item.getSearchTerm();
-            int count = countOccurrences(term.toLowerCase(), search.toLowerCase());
-            if (count > maxCount) {
-                maxCount = count;
-                bestMatch = item;
+        for (Product p : products) {
+            if (p.getName().toLowerCase().contains(lowerQuery)) {
+                result.add(p);
             }
         }
 
-        if (bestMatch == null || maxCount == 0) {
-            throw new BestResultNotFound("Поисковый запрос '" + search + "' не дал подходящих результатов.");
+        for (Article a : articles) {
+            if (a.getName().toLowerCase().contains(lowerQuery)) {
+                result.add((Searchable) a);
+            }
         }
-        return bestMatch;
+
+        return result;
     }
 
-    private int countOccurrences(String str, String sub) {
-        int count = 0;
-        int index = 0;
-        int subLength = sub.length();
-
-        while ((index = str.indexOf(sub, index)) != -1) {
-            count++;
-            index += subLength;
-        }
-        return count;
+    public void add(Searchable product1) {
     }
 }

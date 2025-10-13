@@ -12,6 +12,11 @@ public class FixPriceProduct extends Product {
     }
 
     @Override
+    public String getSearchTerm() {
+        return "";
+    }
+
+    @Override
     public String getType() {
         return "FIX_PRICE_PRODUCT";
     }

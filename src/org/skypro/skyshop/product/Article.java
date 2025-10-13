@@ -9,4 +9,7 @@ public class Article {
         this.content = content;
     }
 
+    public String getName() {
+        return null;
+    }
 }

@@ -21,6 +21,11 @@ public class SimpleProduct extends Product implements Searchable {
     }
 
     @Override
+    public String getSearchTerm() {
+        return "";
+    }
+
+    @Override
     public String getType() {
         return "SIMPLE_PRODUCT";
     }
