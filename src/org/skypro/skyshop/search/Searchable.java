@@ -1,9 +1,7 @@
 package org.skypro.skyshop.search;
 
 public interface Searchable {
-    String getSearchTerm();
-
     String getName();
-
+    String getSearchTerm();
     String getType();
 }

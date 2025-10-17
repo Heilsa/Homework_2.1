@@ -3,12 +3,14 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProductBasket {
     private Map<String, List<Product>> productsMap;
 
     public ProductBasket(List<Product> basketItems) {
         this.productsMap = new HashMap<>();
+        basketItems.forEach(this::addProduct);
     }
 
     public void addProduct(Product product) {
@@ -18,18 +20,14 @@ public class ProductBasket {
 
     public List<Product> removeByName(String name) {
         List<Product> removed = productsMap.remove(name);
-        if (removed == null) {
-            return Collections.emptyList();
-        }
-        return removed;
+        return removed != null ? removed : Collections.emptyList();
     }
 
     public List<Product> getProducts() {
-        List<Product> allProducts = new ArrayList<>();
-        for (List<Product> list : productsMap.values()) {
-            allProducts.addAll(list);
-        }
-        return allProducts;
+        return productsMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     public void printBasket() {
@@ -37,13 +35,19 @@ public class ProductBasket {
             System.out.println("Корзина пуста");
         } else {
             System.out.println("Содержимое корзины:");
-            for (Map.Entry<String, List<Product>> entry : productsMap.entrySet()) {
-                String name = entry.getKey();
-                List<Product> list = entry.getValue();
-                for (Product p : list) {
-                    System.out.println(p);
-                }
-            }
+            productsMap.values()
+                    .stream()
+                    .flatMap(Collection::stream)
+                    .forEach(System.out::println);
+            System.out.println("Количество специальных продуктов: " + getSpecialCount());
         }
+    }
+
+    private long getSpecialCount() {
+        return productsMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(Product:: isSpecial)
+                .count();
     }
 }

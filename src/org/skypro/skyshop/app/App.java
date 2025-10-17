@@ -43,7 +43,7 @@ class Main {
             basket.printBasket();
         }
 
-        SearchEngine engine = new SearchEngine(15);
+        SearchEngine engine = new SearchEngine();
 
         Product product1 = new SimpleProduct("Honor", 3000, false);
         Product product2 = new SimpleProduct("HyperBeast", 5000, true);
@@ -111,4 +111,5 @@ class Main {
         }
         return results;
     }
+
 }

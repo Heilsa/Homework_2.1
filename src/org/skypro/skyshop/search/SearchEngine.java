@@ -1,48 +1,32 @@
 package org.skypro.skyshop.search;
 
-import org.skypro.skyshop.app.SearchableResultComparator;
-import org.skypro.skyshop.product.Article;
-import org.skypro.skyshop.product.Product;
-
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
-    private Set<Product> products = new HashSet<>();
-    private Set<Article> articles = new HashSet<>();
+    private List<Searchable> items;
 
-    public SearchEngine(int i) {
+    public SearchEngine() {
+        this.items = new ArrayList<>();
     }
 
-    public void addProduct(Product product) {
-        products.add(product);
+    public SearchEngine(List<Searchable> items) {
+        this.items = new ArrayList<>(items);
     }
 
-    public void addArticle(Article article) {
-        articles.add(article);
+    public void add(Searchable item) {
+        items.add(item);
     }
 
+    public List<Searchable> getItems() {
+        return items;
+    }
+
+    // Поиск
     public Set<Searchable> search(String query) {
-        TreeSet<Searchable> result = new TreeSet<>(new SearchableResultComparator());
         String lowerQuery = query.toLowerCase();
-
-        for (Product p : products) {
-            if (p.getName().toLowerCase().contains(lowerQuery)) {
-                result.add(p);
-            }
-        }
-
-        for (Article a : articles) {
-            if (a.getName().toLowerCase().contains(lowerQuery)) {
-                result.add((Searchable) a);
-            }
-        }
-
-        return result;
-    }
-
-    public void add(Searchable product1) {
+        return items.stream()
+                .filter(item -> item.getSearchTerm().toLowerCase().contains(lowerQuery))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Searchable::getName))));
     }
 }

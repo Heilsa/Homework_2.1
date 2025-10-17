@@ -12,7 +12,7 @@ public class SimpleProduct extends Product implements Searchable {
         this.special = special;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
